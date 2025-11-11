@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  redis:
+    image: redis:latest  # Or pin to a version like redis:7.2
+    container_name: redis-server
+    ports:
+      - "6379:6379"      # Expose Redis to host (optional if you don’t need external access)
+    volumes:
+      - redis_data:/data  # Persist Redis data
+    restart: always       # Auto-restart Redis if it crashes
+
+  stock-scraper:
+    image: stock_scraper:v1.0
+    container_name: stock-scraper
+    depends_on:
+      - redis
+    ports:
+      - "3000:3000"
+    environment:
+      # Connection details your Go app should read
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_URL=redis://redis:6379
+    user: root
+    restart: on-failure   # Optional but recommended
+
+volumes:
+  redis_data:

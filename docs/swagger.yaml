@@ -1,0 +1,77 @@
+definitions:
+  models.CompanyInfo:
+    properties:
+      book_value:
+        type: string
+      company:
+        type: string
+      current_price:
+        type: string
+      dividend_yield:
+        type: string
+      face_value:
+        type: string
+      high_low:
+        type: string
+      market_cap:
+        type: string
+      roce:
+        type: string
+      roe:
+        type: string
+      stock_pe:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /api/companies:
+    get:
+      description: Returns a list of companies scraped from screener.in
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.CompanyInfo'
+            type: array
+      summary: Get all companies
+      tags:
+      - companies
+  /api/companies/{name}:
+    get:
+      description: Returns info about a specific company scraped from screener.in
+      parameters:
+      - description: Company name
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.CompanyInfo'
+      summary: Get a company details
+      tags:
+      - companies
+  /api/companies/refresh:
+    get:
+      description: Returns a list of companies scraped from screener.in
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.CompanyInfo'
+            type: array
+      summary: Referesh all companies
+      tags:
+      - companies
+swagger: "2.0"
